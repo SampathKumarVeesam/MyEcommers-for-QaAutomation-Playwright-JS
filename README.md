@@ -226,14 +226,14 @@ Open `.env` and configure your credentials:
 BASE_URL=https://samecommers.netlify.app/
 
 # Real Customer Test Credentials
-REAL_USER_NAME=UserName
-REAL_USER_EMAIL=useremail
-REAL_USER_PASSWORD=userpassword
+REAL_USER_NAME=User
+REAL_USER_EMAIL=user@mailto.plus
+REAL_USER_PASSWORD=User@2$0$2$6
 
 # Administrator Test Credentials
 ADMIN_USERNAME=admin
 ADMIN_EMAIL=admin@practicesoftwaretesting.com
-ADMIN_PASSWORD=YourAdminPassword123!
+ADMIN_PASSWORD=Sampath@123
 ```
 
 > **Note**: `.env` is excluded from git tracking via `.gitignore` to prevent secret exposure.
