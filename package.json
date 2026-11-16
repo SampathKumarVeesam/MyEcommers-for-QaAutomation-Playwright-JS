@@ -1,0 +1,41 @@
+{
+  "name": "sam-ecommers-webautomation",
+  "version": "1.0.0",
+  "description": "Enterprise-grade Playwright E2E automation framework for ShopSphere e-commerce platform using JavaScript and Page Object Model (POM).",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:home": "playwright test tests/home.spec.js",
+    "test:home:headed": "playwright test tests/home.spec.js --headed",
+    "test:auth": "playwright test tests/auth.spec.js",
+    "test:auth:headed": "playwright test tests/auth.spec.js --headed",
+    "test:pdp": "playwright test tests/product-details.spec.js",
+    "test:pdp:headed": "playwright test tests/product-details.spec.js --headed",
+    "test:search": "playwright test tests/search.spec.js",
+    "test:search:headed": "playwright test tests/search.spec.js --headed",
+    "test:checkout": "playwright test tests/cart-checkout.spec.js",
+    "test:checkout:headed": "playwright test tests/cart-checkout.spec.js --headed",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "playwright-js",
+    "automation",
+    "e2e-testing",
+    "qa-automation",
+    "page-object-model",
+    "pom",
+    "shopsphere",
+    "ecommerce-testing"
+  ],
+  "author": "Sampath Kumar Veesam",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^26.6.6",
+    "dotenv": "^16.6.1"
+  }
+}
