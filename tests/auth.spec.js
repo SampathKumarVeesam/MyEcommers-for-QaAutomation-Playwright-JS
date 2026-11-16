@@ -2,9 +2,9 @@ import { test, expect } from '@playwright/test';
 import { AuthPage } from '../pages/AuthPage.js';
 
 const REAL_USER = {
-  name: process.env.REAL_USER_NAME || 'Deepak',
-  email: process.env.REAL_USER_EMAIL || 'deepak@mailto.plus',
-  password: process.env.REAL_USER_PASSWORD || 'Deepak@2$0$2$6',
+  name: process.env.REAL_USER_NAME || 'User',
+  email: process.env.REAL_USER_EMAIL || 'user@mailto.plus',
+  password: process.env.REAL_USER_PASSWORD || 'User@2$0$2$6',
 };
 
 const ADMIN_USER = {
