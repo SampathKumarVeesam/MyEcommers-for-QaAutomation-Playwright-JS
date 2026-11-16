@@ -12,7 +12,7 @@ export default defineConfig({
 
   use: {
     baseURL: process.env.BASE_URL || 'https://samecommers.netlify.app/',
-    viewport: null,
+    viewport: process.env.CI ? { width: 1920, height: 1080 } : null,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',

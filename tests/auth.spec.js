@@ -2,15 +2,15 @@ import { test, expect } from '@playwright/test';
 import { AuthPage } from '../pages/AuthPage.js';
 
 const REAL_USER = {
-  name: process.env.REAL_USER_NAME,
-  email: process.env.REAL_USER_EMAIL,
-  password: process.env.REAL_USER_PASSWORD,
+  name: process.env.REAL_USER_NAME || 'Deepak',
+  email: process.env.REAL_USER_EMAIL || 'deepak@mailto.plus',
+  password: process.env.REAL_USER_PASSWORD || 'Deepak@2$0$2$6',
 };
 
 const ADMIN_USER = {
   username: process.env.ADMIN_USERNAME || 'admin',
   email: process.env.ADMIN_EMAIL || 'admin@practicesoftwaretesting.com',
-  password: process.env.ADMIN_PASSWORD || 'Sampath@1231Admin',
+  password: process.env.ADMIN_PASSWORD || 'Sampath@123',
 };
 
 test.describe('ShopSphere Complete Auth Suite (Customer & Administrator)', () => {

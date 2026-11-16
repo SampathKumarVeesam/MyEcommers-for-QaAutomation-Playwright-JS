@@ -4,8 +4,8 @@ import { ProductDetailPage } from '../pages/ProductDetailPage.js';
 import { CartCheckoutPage } from '../pages/CartCheckoutPage.js';
 
 const REAL_USER = {
-  email: process.env.REAL_USER_EMAIL,
-  password: process.env.REAL_USER_PASSWORD,
+  email: process.env.REAL_USER_EMAIL || 'deepak@mailto.plus',
+  password: process.env.REAL_USER_PASSWORD || 'Deepak@2$0$2$6',
 };
 
 const INDIAN_ADDRESS = {
