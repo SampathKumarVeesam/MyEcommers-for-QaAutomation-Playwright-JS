@@ -226,9 +226,9 @@ Open `.env` and configure your credentials:
 BASE_URL=https://samecommers.netlify.app/
 
 # Real Customer Test Credentials
-REAL_USER_NAME=Deepak
-REAL_USER_EMAIL=deepak@mailto.plus
-REAL_USER_PASSWORD=YourPassword123!
+REAL_USER_NAME=UserName
+REAL_USER_EMAIL=useremail
+REAL_USER_PASSWORD=userpassword
 
 # Administrator Test Credentials
 ADMIN_USERNAME=admin
