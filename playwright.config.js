@@ -5,10 +5,10 @@ dotenv.config();
 
 export default defineConfig({
   testDir: './tests',
-  timeout: 60000,
+  timeout: 45000,
   fullyParallel: false,
   workers: process.env.CI ? 1 : undefined,
-  retries: process.env.CI ? 2 : 1,
+  retries: 1,
   reporter: [['html', { open: 'never' }], ['list']],
 
   use: {
