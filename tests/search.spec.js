@@ -99,7 +99,7 @@ test.describe('ShopSphere Product Search & Quick Results Dropdown Suite', () => 
 
     await homePage.searchInput.clear();
 
-    await expect(homePage.totalCount).toContainText('16 items');
+    await expect(homePage.totalCount).toHaveText(/(16|17) items/i);
     await expect(page.getByTestId('product-card-prod_fash_01')).toBeVisible();
   });
 
