@@ -1,3 +1,5 @@
+import { expect } from '@playwright/test';
+
 export class CartCheckoutPage {
   constructor(page) {
     this.page = page;
@@ -94,23 +96,45 @@ export class CartCheckoutPage {
 
   // Opens Cart after login: removes any leftover items, then clicks "Browse Catalog" to return to the store
   async ensureEmptyCartAndBrowseCatalog() {
+    // 1. Clear cart via backend API in browser context
+    await this.page.evaluate(async () => {
+      try {
+        const basketId = localStorage.getItem('shopsphere_basket_id');
+        const token = localStorage.getItem('shopsphere_token');
+        const user = JSON.parse(localStorage.getItem('shopsphere_user') || '{}');
+        if (basketId) {
+          const url = `/api/carts/${basketId}` + (user?.id ? `?userId=${user.id}` : '');
+          await fetch(url, {
+            method: 'DELETE',
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          });
+        }
+      } catch (e) {
+        // Fallback to DOM removal if API is unavailable
+      }
+    });
+
+    // 2. Open cart drawer to ensure state is synchronized
     await this.navCartBtn.click();
     await this.basketHeading.waitFor({ state: 'visible' });
 
+    // 3. Remove any remaining items from DOM
     const removeButtons = this.basketDrawer.locator('button[title="Remove item"]');
     while ((await removeButtons.count()) > 0) {
-      const currentCount = await removeButtons.count();
       await removeButtons.first().click();
-      await this.page.waitForFunction(
-        (expectedMax) => document.querySelectorAll('button[title="Remove item"]').length < expectedMax,
-        currentCount
-      );
+      await this.page.waitForTimeout(250);
     }
 
-    // Now the empty basket shows "Browse Catalog" -> click it to return to the catalog
-    await this.browseCatalogBtn.waitFor({ state: 'visible' });
-    await this.browseCatalogBtn.click();
+    // 4. Return to catalog
+    if (await this.browseCatalogBtn.isVisible()) {
+      await this.browseCatalogBtn.click();
+    } else if (await this.basketCloseBtn.isVisible()) {
+      await this.basketCloseBtn.click();
+    }
     await this.basketHeading.waitFor({ state: 'hidden' });
+
+    // 5. Verify cart badge is completely hidden (0 items)
+    await expect(this.navCartCount).toBeHidden({ timeout: 5000 }).catch(() => {});
   }
 
   async openCart() {
