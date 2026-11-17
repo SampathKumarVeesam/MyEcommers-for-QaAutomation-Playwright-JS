@@ -31,9 +31,9 @@ jobs:
       env:
         CI: true
         BASE_URL: https://samecommers.netlify.app/
-        REAL_USER_NAME: ${{ secrets.REAL_USER_NAME || 'User' }}
-        REAL_USER_EMAIL: ${{ secrets.REAL_USER_EMAIL || 'user@mailto.plus' }}
-        REAL_USER_PASSWORD: ${{ secrets.REAL_USER_PASSWORD || 'User@2$0$2$6' }}
+        REAL_USER_NAME: ${{ secrets.REAL_USER_NAME || 'Jane Customer' }}
+        REAL_USER_EMAIL: ${{ secrets.REAL_USER_EMAIL || 'customer@practicesoftwaretesting.com' }}
+        REAL_USER_PASSWORD: ${{ secrets.REAL_USER_PASSWORD || 'User01' }}
         ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME || 'admin' }}
         ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL || 'admin@practicesoftwaretesting.com' }}
         ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD || 'Sampath@123' }}
