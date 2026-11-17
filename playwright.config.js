@@ -9,7 +9,9 @@ export default defineConfig({
   fullyParallel: false,
   workers: process.env.CI ? 1 : undefined,
   retries: 1,
-  reporter: [['html', { open: 'never' }], ['list']],
+  reporter: process.env.CI
+    ? [['github'], ['list'], ['html', { open: 'never' }]]
+    : [['html', { open: 'never' }], ['list']],
 
   use: {
     baseURL: process.env.BASE_URL || 'https://samecommers.netlify.app/',
