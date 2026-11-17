@@ -1,9 +1,9 @@
 # 🛒 ShopSphere — Enterprise Playwright E2E Automation Framework
 
-[![Playwright Tests](https://img.shields.io/badge/Playwright-v1.65.1-45ba4b?style=for-the-badge&logo=playwright&logoColor=white)](https://playwright.dev/)
+[![Playwright Tests](https://img.shields.io/badge/Playwright-v1.58.2-45ba4b?style=for-the-badge&logo=playwright&logoColor=white)](https://playwright.dev/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Node.js](https://img.shields.io/badge/Node.js-LTS-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![CI/CD](https://img.shields.io/badge/GitHub%20Actions-CI%20Enabled-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/SampathKumarVeesam/MyEcommers-for-QaAutomation-Playwright-JS/actions)
+[![CI/CD](https://img.shields.io/badge/GitHub%20Actions-Passing%20(61%2F61)-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/SampathKumarVeesam/MyEcommers-for-QaAutomation-Playwright-JS/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
 An enterprise-grade End-to-End (E2E) Test Automation Framework architected with **Playwright**, modern **JavaScript (ES Modules)**, and the **Page Object Model (POM)** design pattern. Built for robust, scalable, and cross-platform verification of the [ShopSphere E-Commerce Platform](https://samecommers.netlify.app/).
@@ -16,23 +16,23 @@ An enterprise-grade End-to-End (E2E) Test Automation Framework architected with 
 - [Application Under Test (AUT)](#-application-under-test-aut)
 - [Framework Highlights & Engineering Practices](#-framework-highlights--engineering-practices)
 - [Project Architecture](#-project-architecture)
-- [Test Suites & Coverage Matrix](#-test-suites--coverage-matrix)
+- [Test Suites & Coverage Matrix (61 Tests)](#-test-suites--coverage-matrix-61-tests)
 - [Tech Stack](#-tech-stack)
 - [Getting Started](#-getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
   - [Environment Configuration](#environment-configuration)
 - [Running Tests](#-running-tests)
-- [HTML Reporting & Artifacts](#-html-reporting--artifacts)
-- [CI/CD Pipeline](#-cicd-pipeline)
+- [HTML Reporting & Failure Artifacts](#-html-reporting--failure-artifacts)
+- [CI/CD Pipeline (GitHub Actions)](#-cicd-pipeline-github-actions)
 - [Contributing & Code Standards](#-contributing--code-standards)
-- [Author & Connect](#-author--connect)
+- [License](#-license)
 
 ---
 
 ## 🌟 Overview
 
-This framework simulates real-world customer and administrator journeys through automated browser sessions. It provides automated test coverage spanning authentication, dynamic product catalogs, faceted filtering, interactive modal dialogues, live search dropdowns, shopping cart calculations, coupon processing, and complete multi-step checkout with OTP simulation.
+This test suite simulates real-world customer and administrator journeys through automated browser sessions. It provides automated test coverage spanning authentication, dynamic product catalogs, faceted filtering, interactive modal dialogues, live search dropdowns, shopping cart calculations, coupon processing, and complete multi-step checkout with OTP simulation and shipping destination validations.
 
 ---
 
@@ -46,14 +46,15 @@ This framework simulates real-world customer and administrator journeys through 
   - Dynamic Catalog Filtering (Category tabs, Price sliders, Stock filters, Sorting, Pagination)
   - Interactive Product Detail Modal (PDP) with Steppers, Pricing, and Social Sharing
   - Real-time Shopping Basket with dynamic totals and promotional discount codes (`SPHERE20`)
-  - Multi-Step Checkout Flow (Indian Shipping Address, 3 Delivery Tiers, 4 Payment Gateways, OTP Verification, Order Confirmation)
+  - Multi-Step Checkout Flow (Country validation, Indian Shipping Address, 3 Delivery Tiers, 4 Payment Gateways, OTP Verification, Order Confirmation)
+  - Cash on Delivery (COD) Payment Verification and Admin Approval workflows
 
 ---
 
 ## 🚀 Framework Highlights & Engineering Practices
 
-- **Page Object Model (POM)**: Complete separation of page locators, actions, and assertions for clean maintainability.
-- **Resilient, User-Centric Locators**: Prioritizes `page.getByRole()`, `page.getByTestId()`, and `page.getByPlaceholder()` over fragile CSS/XPath selectors.
+- **Page Object Model (POM)**: Strict separation of page locators, actions, and assertions for clean maintainability.
+- **Resilient, User-Centric Locators**: Prioritizes `page.getByRole()`, `page.getByTestId()`, and `page.getByPlaceholder()` over fragile CSS or XPath selectors.
 - **API Network Interception**: Leverages `page.waitForResponse()` to validate HTTP 200/201 response payloads during registration and login workflows.
 - **Positive & Negative Scenarios**: Validates edge cases including XSS script injections, invalid inputs, duplicate registrations, short passwords, and expired coupons.
 - **Cross-Viewport & Responsive Testing**: Automated verification of mobile viewport transitions (`375x667`) and responsive navigation adaptations.
@@ -63,7 +64,7 @@ This framework simulates real-world customer and administrator journeys through 
 
 ---
 
-## 📂 Project Architecture
+## 📁 Project Architecture
 
 ```plaintext
 MyEcommers-for-QaAutomation-Playwright-JS/
@@ -72,16 +73,16 @@ MyEcommers-for-QaAutomation-Playwright-JS/
 │       └── playwright.yml         # GitHub Actions CI pipeline configuration
 ├── pages/                          # Page Object Model (POM) classes
 │   ├── AuthPage.js                # Customer & Admin authentication actions & locators
-│   ├── CartCheckoutPage.js        # Cart drawer, coupon handling & 3-step checkout
+│   ├── CartCheckoutPage.js        # Cart drawer, coupon handling, country & checkout
 │   ├── HomePage.js                # Catalog, search, filters, hero slides & footer
 │   └── ProductDetailPage.js       # PDP modal, steppers, pricing & social sharing
-├── tests/                         # E2E Test Specifications
-│   ├── auth.spec.js               # Registration, Login, Logout & Admin auth suite
-│   ├── cart-checkout.spec.js      # Cart management, coupon & multi-step checkout suite
-│   ├── home.spec.js               # Catalog browsing, sliders, sorting & pagination
-│   ├── product-details.spec.js    # PDP modal, dynamic pricing & basket interactions
-│   └── search.spec.js             # Live search, dropdown previews, XSS & edge cases
-├── .env.example                   # Template environment variables
+├── tests/                         # E2E Test Specifications (61 Tests)
+│   ├── auth.spec.js               # Registration, Login, Logout & Admin auth suite (21 tests)
+│   ├── cart-checkout.spec.js      # Cart management, coupon & multi-step checkout suite (12 tests)
+│   ├── home.spec.js               # Catalog browsing, sliders, sorting & pagination (10 tests)
+│   ├── product-details.spec.js    # PDP modal, dynamic pricing & basket interactions (7 tests)
+│   └── search.spec.js             # Live search, dropdown previews, XSS & edge cases (11 tests)
+├── .env.example                   # Template environment variables (safe placeholders)
 ├── .gitignore                     # Git ignore rules for reports, cache, and secrets
 ├── package.json                   # NPM dependencies, scripts, and metadata
 ├── playwright.config.js           # Playwright global runner configuration
@@ -90,9 +91,9 @@ MyEcommers-for-QaAutomation-Playwright-JS/
 
 ---
 
-## 🧪 Test Suites & Coverage Matrix
+## 🧪 Test Suites & Coverage Matrix (61 Tests)
 
-### 1. Complete Authentication Suite (`tests/auth.spec.js`)
+### 1. Complete Authentication Suite (`tests/auth.spec.js` — 21 Tests)
 | Test ID | Type | Description |
 |---|---|---|
 | `TC-REG-01` | Positive | Customer registration and database persistence verification |
@@ -117,7 +118,7 @@ MyEcommers-for-QaAutomation-Playwright-JS/
 | `TC-ADM-08` | RBAC | Verifies standard customer credentials cannot access the Admin portal |
 | `TC-ADM-09` | Negative | Admin login blocked on empty field submission |
 
-### 2. Product Search & Live Results Suite (`tests/search.spec.js`)
+### 2. Product Search & Live Results Suite (`tests/search.spec.js` — 11 Tests)
 | Test ID | Type | Description |
 |---|---|---|
 | `TC-SRCH-01` | UI/UX | Verifies search input visibility, placeholder, and attributes |
@@ -125,14 +126,14 @@ MyEcommers-for-QaAutomation-Playwright-JS/
 | `TC-SRCH-03` | Positive | Full product name search with Enter key filters catalog card accurately |
 | `TC-SRCH-04` | Search | Case-insensitive search verification (`UPPERCASE` vs `lowercase`) |
 | `TC-SRCH-05` | Category | Product category keyword search (e.g., *Perfume*) |
-| `TC-SRCH-06` | Reset | Clearing search query restores full 16-item catalog |
+| `TC-SRCH-06` | Reset | Clearing search query restores full catalog items |
 | `TC-SRCH-07` | Input | Leading and trailing whitespace tolerance |
 | `TC-SRCH-08` | Negative | Non-existent queries display 0 items gracefully without broken state |
 | `TC-SRCH-09` | Security | XSS payload injection (`<script>alert("XSS")</script>`) is safely neutralized |
 | `TC-SRCH-10` | Negative | Whitespace-only query handling |
 | `TC-SRCH-11` | Responsive | Mobile viewport swaps desktop input for `mobile-search-input` |
 
-### 3. Home Page & Catalog Browsing Suite (`tests/home.spec.js`)
+### 3. Home Page & Catalog Browsing Suite (`tests/home.spec.js` — 10 Tests)
 | Test ID | Description |
 |---|---|
 | `TC-01` | Verifies page title, branding logo, promo badge (`SPHERE20`), and header controls |
@@ -142,10 +143,10 @@ MyEcommers-for-QaAutomation-Playwright-JS/
 | `TC-06` | Price slider filtering ($200 max), In-Stock toggle, and sorting (Low to High) |
 | `TC-07` | Product card attribute verification and Add-to-Cart quick action |
 | `TC-08` | Pagination navigation between Page 1 and Page 2 |
-| `TC-09` | FAQ accordion accordion expansion and newsletter subscription |
+| `TC-09` | FAQ accordion expansion and newsletter subscription |
 | `TC-10` | Mobile viewport responsive layout verification |
 
-### 4. Product Detail Modal & Cart Flow Suite (`tests/product-details.spec.js`)
+### 4. Product Detail Modal & Cart Flow Suite (`tests/product-details.spec.js` — 7 Tests)
 | Test ID | Description |
 |---|---|
 | `TC-PDP-01` | Opens PDP modal, verifies controls (Share, Add to Basket, Buy Now, Close) |
@@ -157,22 +158,25 @@ MyEcommers-for-QaAutomation-Playwright-JS/
 | `TC-PDP-07` | Close icon (`X`) dismisses PDP modal back to catalog |
 | `TC-PDP-08` | Full End-to-End flow: Search -> Open -> Increment Qty -> Share -> Add -> Close |
 
-### 5. Cart, Coupon & Multi-Step Checkout Suite (`tests/cart-checkout.spec.js`)
+### 5. Cart, Coupon & Multi-Step Checkout Suite (`tests/cart-checkout.spec.js` — 12 Tests)
 | Test ID | Description |
 |---|---|
 | `TC-CART-01` | Shopping Basket drawer opens; stepper counts and subtotal update in real-time |
 | `TC-CART-02` | Valid coupon `SPHERE20` applies discount; successfully removed on request |
 | `TC-CART-03` | Invalid coupon code displays error notice without altering order total |
-| `TC-CHK-01` | Step 1: Secure Checkout accepts full Indian Shipping Address (Hyderabad, Telangana) |
+| `TC-CHK-01` | Step 1: Secure Checkout accepts Country, City, State, and Postal Code |
 | `TC-CHK-02` | Step 2: Delivery Method 1 — Standard Ground Shipping (FREE) & Back button verification |
 | `TC-CHK-03` | Step 2: Delivery Method 2 — Express 2-Day Air ($14.99) |
 | `TC-CHK-04` | Step 2: Delivery Method 3 — Next-Day Priority Courier ($24.99) |
 | `TC-CHK-05` | Step 3: Payment gateways (UPI, Cards, Net Banking, COD) and Back navigation |
 | `TC-CHK-06` | Complete End-to-End Checkout: Basket -> Qty -> `SPHERE20` -> Address -> Shipping -> Card -> OTP (`123456`) -> Order Confirmation |
+| `TC-CHK-07` | OTP Gate rejects invalid/wrong OTP code with clear error notice |
+| `TC-CHK-08` | Guest Checkout Auth Guard: Guest user is prompted to sign in and completes checkout |
+| `TC-CHK-09` | PDP "Buy Now" direct jump into Secure Checkout flow |
 
 ---
 
-## 🛠 Tech Stack
+## 🛠️ Tech Stack
 
 - **Testing Framework**: [Playwright Test](https://playwright.dev/)
 - **Programming Language**: JavaScript (Node.js ES Modules)
@@ -208,7 +212,7 @@ Ensure you have the following installed on your machine:
 
 3. **Install Playwright Browsers & OS Dependencies**:
    ```bash
-   npx playwright install --with-deps
+   npx playwright install --with-deps chromium
    ```
 
 ### Environment Configuration
@@ -219,24 +223,24 @@ Create a `.env` file in the root directory by copying the provided `.env.example
 cp .env.example .env
 ```
 
-Open `.env` and configure your credentials:
+Configure your test parameters in `.env`:
 
 ```env
 # Application Base URL
 BASE_URL=https://samecommers.netlify.app/
 
-# Real Customer Test Credentials
-REAL_USER_NAME=User
-REAL_USER_EMAIL=user@mailto.plus
-REAL_USER_PASSWORD=User@2$0$2$6
+# Customer Test Credentials
+REAL_USER_NAME=Your Customer Name
+REAL_USER_EMAIL=customer@example.com
+REAL_USER_PASSWORD=your_customer_password
 
 # Administrator Test Credentials
 ADMIN_USERNAME=admin
-ADMIN_EMAIL=admin@practicesoftwaretesting.com
-ADMIN_PASSWORD=Sampath@123
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=your_admin_password
 ```
 
-> **Note**: `.env` is excluded from git tracking via `.gitignore` to prevent secret exposure.
+> **Security Note**: Never commit actual passwords or credentials to version control. The `.env` file is excluded from git tracking via `.gitignore`.
 
 ---
 
@@ -259,72 +263,68 @@ npm run test:headed
 npm run test:ui
 ```
 
-### Run Tests in Debug Mode (Playwright Inspector)
+### Run Specific Test Suite
+```bash
+# Authentication Suite
+npm run test:auth
+
+# Cart & Multi-Step Checkout Suite
+npm run test:cart
+
+# Home Page & Catalog Browsing Suite
+npm run test:home
+
+# Product Detail Modal (PDP) Suite
+npm run test:pdp
+
+# Search & Quick Results Suite
+npm run test:search
+```
+
+### Debugging with Playwright Inspector
 ```bash
 npm run test:debug
 ```
 
-### Run Specific Test Modules
-
-| Module | Command (Headless) | Command (Headed) |
-|---|---|---|
-| **Authentication Suite** | `npm run test:auth` | `npm run test:auth:headed` |
-| **Home & Catalog Suite** | `npm run test:home` | `npm run test:home:headed` |
-| **Search & Dropdown Suite** | `npm run test:search` | `npm run test:search:headed` |
-| **Product Detail (PDP) Suite** | `npm run test:pdp` | `npm run test:pdp:headed` |
-| **Cart & Checkout Suite** | `npm run test:checkout` | `npm run test:checkout:headed` |
-
 ---
 
-## 📊 HTML Reporting & Artifacts
+## 📊 HTML Reporting & Failure Artifacts
 
-Playwright generates an interactive HTML report containing step-by-step logs, execution times, video recordings, and screenshots.
+After any test execution, launch the interactive Playwright HTML report:
 
-To launch the latest test report locally:
 ```bash
 npm run report
 ```
 
+The report provides:
+- Detailed step-by-step execution timeline with elapsed durations.
+- Color-coded pass/fail/retry status indicators.
+- Automatic screenshots captured at the point of failure.
+- Full video recordings of failed test runs.
+- Playwright Trace Viewer files (`trace.zip`) enabling time-travel DOM inspection, action logs, and network requests.
+
 ---
 
-## ⚙️ CI/CD Pipeline
+## ⚙️ CI/CD Pipeline (GitHub Actions)
 
-Continuous Integration is pre-configured using **GitHub Actions** (`.github/workflows/playwright.yml`).
+The repository includes a GitHub Actions workflow located in `.github/workflows/playwright.yml`:
 
-### Workflow Triggers:
-- Every `push` to `main` or `master`
-- Every `pull_request` targeting `main` or `master`
-
-### Pipeline Steps:
-1. Check out repository code.
-2. Set up Node.js LTS environment.
-3. Cache and install clean dependencies via `npm ci`.
-4. Install Playwright browser binaries with required system dependencies.
-5. Execute full test suite in headless mode.
-6. Publish HTML test report artifacts with 30-day retention.
+- **Triggers**: Executed on every `push` and `pull_request` to `main` and `master` branches.
+- **Environment**: Runs on `ubuntu-latest` with automated browser caching and Node.js setup.
+- **Execution**: Runs with `--workers=1` to guarantee isolated, collision-free database transactions against the live target platform.
+- **Artifacts**: Playwright HTML test reports and failure traces are automatically uploaded as workflow artifacts and retained for 30 days.
 
 ---
 
 ## 🤝 Contributing & Code Standards
 
-Contributions, bug reports, and suggestions are welcome!
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'feat: Add AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 👤 Author & Connect
-
-**Sampath Kumar Veesam**  
-- **GitHub**: [@SampathKumarVeesam](https://github.com/SampathKumarVeesam)  
-- **Email**: sampathkumarveesam@gmail.com  
-- **Project Repository**: [MyEcommers-for-QaAutomation-Playwright-JS](https://github.com/SampathKumarVeesam/MyEcommers-for-QaAutomation-Playwright-JS)
+1. Follow the **Page Object Model (POM)** pattern: all selectors belong in `pages/`, and tests in `tests/`.
+2. Prioritize user-facing, accessible locators (`getByRole`, `getByTestId`, `getByPlaceholder`).
+3. Ensure all tests run green locally before creating a pull request.
+4. Keep commit messages clear and adhere to Conventional Commits (e.g., `feat:`, `fix:`, `test:`, `docs:`).
 
 ---
 
 ## 📄 License
 
-This project is open-source and licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
