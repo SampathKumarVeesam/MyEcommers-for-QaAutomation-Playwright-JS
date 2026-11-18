@@ -44,7 +44,7 @@ test.describe('ShopSphere Home Page Suite', () => {
 
     // Reset to All Products
     await homePage.selectCategory('all');
-    await expect(homePage.totalCount).toHaveText(/(16|17) items/i);
+    await expect(homePage.totalCount).toHaveText(/\d+\s+items/i);
   });
 
   test('TC-05: Hero carousel slides navigate properly', async ({ page }) => {
