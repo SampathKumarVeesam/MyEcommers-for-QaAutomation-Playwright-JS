@@ -24,9 +24,39 @@ test.describe('ShopSphere Cart (Your Shopping Basket), Coupon & Multi-Step Check
   let pdp;
   let cartCheckout;
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, request }) => {
     if (!REAL_USER.email || !REAL_USER.password) {
       throw new Error('Missing REAL_USER_EMAIL or REAL_USER_PASSWORD in .env');
+    }
+
+    const baseURL = process.env.BASE_URL || 'https://samecommers.netlify.app';
+
+    // 0. Ensure user's cart in PostgreSQL is 100% clean and isolated before test
+    try {
+      const loginRes = await request.post(`${baseURL}/api/users/login`, {
+        data: { email: REAL_USER.email, password: REAL_USER.password },
+      });
+      if (loginRes.ok()) {
+        const loginJson = await loginRes.json();
+        const token = loginJson.data?.token;
+        const userId = loginJson.data?.user?.id;
+        if (token && userId) {
+          const cartRes = await request.get(`${baseURL}/api/carts/user/${userId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (cartRes.ok()) {
+            const cartJson = await cartRes.json();
+            const basketId = cartJson.data?.id;
+            if (basketId) {
+              await request.delete(`${baseURL}/api/carts/${basketId}?userId=${userId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+              });
+            }
+          }
+        }
+      }
+    } catch (e) {
+      // Ignored if network glitch
     }
 
     authPage = new AuthPage(page);
@@ -42,10 +72,7 @@ test.describe('ShopSphere Cart (Your Shopping Basket), Coupon & Multi-Step Check
     });
     await expect(authPage.signInNavBtn).toBeHidden();
 
-    // 2. Open Cart -> clear any leftover items -> click "Browse Catalog" when basket is empty
-    await cartCheckout.ensureEmptyCartAndBrowseCatalog();
-
-    // 3. Search "stu" -> select BassForge Studio Headphones from Quick Results dropdown -> Add to Basket -> Close PDP (w-5 h-5)
+    // 2. Search "stu" -> select BassForge Studio Headphones from Quick Results dropdown -> Add to Basket -> Close PDP
     await pdp.searchDropdownAndOpenProduct('stu', DROPDOWN_PRODUCT_ID);
     await pdp.clickAddToBasket();
     await expect(cartCheckout.navCartCount).toHaveText('1');
@@ -55,7 +82,32 @@ test.describe('ShopSphere Cart (Your Shopping Basket), Coupon & Multi-Step Check
     }
   });
 
-  test.afterEach(async ({ page }) => {
+  test.afterEach(async ({ page, request }) => {
+    try {
+      const baseURL = process.env.BASE_URL || 'https://samecommers.netlify.app';
+      const loginRes = await request.post(`${baseURL}/api/users/login`, {
+        data: { email: REAL_USER.email, password: REAL_USER.password },
+      });
+      if (loginRes.ok()) {
+        const loginJson = await loginRes.json();
+        const token = loginJson.data?.token;
+        const userId = loginJson.data?.user?.id;
+        if (token && userId) {
+          const cartRes = await request.get(`${baseURL}/api/carts/user/${userId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (cartRes.ok()) {
+            const cartJson = await cartRes.json();
+            const basketId = cartJson.data?.id;
+            if (basketId) {
+              await request.delete(`${baseURL}/api/carts/${basketId}?userId=${userId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+              });
+            }
+          }
+        }
+      }
+    } catch (e) {}
     await page.close();
   });
 
