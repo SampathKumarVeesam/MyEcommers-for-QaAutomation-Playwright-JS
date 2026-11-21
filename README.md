@@ -81,9 +81,10 @@ MyEcommers-for-QaAutomation-Playwright-JS/
 ├── tests/                         # E2E Test Specifications (77+ Tests)
 │   ├── admin-amount-handling.spec.js # Admin Amount Handling, Cash/QR queues & alerts (6 tests)
 │   ├── agent-settlement-flow.spec.js # Full COD Settlement & Store Cash Deposit lifecycle (1 test)
-│   ├── auth.spec.js               # Registration, Login, Logout & Admin auth suite (21 tests)
+│   ├── auth.spec.js               # Registration, Login, Logout & Admin auth suite (23 tests)
 │   ├── cart-checkout.spec.js      # Cart management, coupon & multi-step checkout suite (12 tests)
-│   ├── delivery-agent.spec.js     # Delivery Agent onboarding, OTP & store deposit suite (9 tests)
+│   ├── delivery-agent.spec.js     # Delivery Agent onboarding, OTP & store deposit suite (14 tests)
+│   ├── forgot-password.spec.js    # Forgot & Reset Password suite with EP & BVA (14 tests)
 │   ├── home.spec.js               # Catalog browsing, sliders, sorting & pagination (10 tests)
 │   ├── product-details.spec.js    # PDP modal, dynamic pricing & basket interactions (7 tests)
 │   └── search.spec.js             # Live search, dropdown previews, XSS & edge cases (11 tests)
@@ -191,6 +192,11 @@ MyEcommers-for-QaAutomation-Playwright-JS/
 | `TC-AGENT-07` | Settlement | Store Cash Deposit tab displays cash balance, lock status, and Hyderabad Store details |
 | `TC-AGENT-08` | Alerts | In-App Notification Bell toggles real-time delivery agent alerts dropdown |
 | `TC-AGENT-09` | Session | Delivery Agent can successfully log out and return to the login screen |
+| `TC-AGENT-10` | Negative (EP) | Agent login rejected on incorrect password with security banner |
+| `TC-AGENT-11` | Negative (EP) | Agent login rejected on non-existent delivery agent account |
+| `TC-AGENT-12` | Positive (EP) | Agent registration with diverse vehicle types (Electric Van, Scooter) and Hyderabad zones |
+| `TC-AGENT-13` | Positive (EP) | Gender selection dynamically presents corresponding avatar options |
+| `TC-AGENT-14` | API/Presence | Live FIFO queue heartbeat maintaining online rotation presence |
 
 ### 7. Admin Amount Collection & Cash Handling Console Suite (`tests/admin-amount-handling.spec.js` — 6 Tests)
 | Test ID | Type | Description |
@@ -206,6 +212,24 @@ MyEcommers-for-QaAutomation-Playwright-JS/
 | Test ID | Type | Description |
 |---|---|---|
 | `TC-SETTLE-01` | End-to-End | Full lifecycle verification: Admin Amount Handling -> Agent Demo Login -> Store Cash Deposit -> In-App Notifications -> Agent Sign Out |
+
+### 9. Forgot & Reset Password Security Suite (`tests/forgot-password.spec.js` — 14 Tests)
+| Test ID | Method | Description |
+|---|---|---|
+| `TC-FP-EP-01` | Positive (EP) | Customer requests password reset OTP for registered account |
+| `TC-FP-EP-02` | Positive (EP) | Delivery Agent requests recovery OTP via Agent Portal |
+| `TC-FP-EP-03` | Security (EP) | Administrator self-service reset is strictly blocked with HTTP 403 Forbidden |
+| `TC-FP-EP-04` | Negative (EP) | Unregistered email returns 404 account not found error |
+| `TC-FP-EP-05` | Negative (EP) | Malformed email is rejected by client-side format validation |
+| `TC-FP-BVA-01` | Negative (BVA) | Password reset rejects 5-character password (lower boundary $N-1$) |
+| `TC-FP-BVA-02` | Positive (BVA) | Exactly 6-character password satisfies minimum boundary requirement ($N$) |
+| `TC-FP-EP-06` | Negative (EP) | Password reset rejects non-matching passwords |
+| `TC-FP-BVA-03` | Negative (BVA) | Empty OTP submission (0 chars) is blocked |
+| `TC-FP-BVA-04` | Negative (BVA) | 5-digit OTP fails verification (boundary $N-1$) |
+| `TC-FP-BVA-05` | Negative (BVA) | 6-digit incorrect OTP code is rejected |
+| `TC-FP-AGENT-01` | Negative (EP) | Delivery Agent reset rejects invalid OTP via Portal modal |
+| `TC-FP-AGENT-02` | Negative (EP) | Delivery Agent reset validates matching passwords |
+| `TC-AUTH-FP-01` | Integration | Customer Sign In modal seamlessly links to Forgot Password recovery |
 
 ---
 
@@ -263,14 +287,22 @@ Configure your test parameters in `.env`:
 BASE_URL=https://samecommers.netlify.app/
 
 # Customer Test Credentials
-REAL_USER_NAME=Your Customer Name
-REAL_USER_EMAIL=customer@example.com
-REAL_USER_PASSWORD=your_customer_password
+REAL_USER_NAME=Jane Customer
+REAL_USER_EMAIL=customer@practicesoftwaretesting.com
+REAL_USER_PASSWORD=User01
 
 # Administrator Test Credentials
 ADMIN_USERNAME=admin
-ADMIN_EMAIL=admin@example.com
-ADMIN_PASSWORD=your_admin_password
+ADMIN_EMAIL=admin@practicesoftwaretesting.com
+ADMIN_PASSWORD=Sampath@123
+
+# Verified Delivery Partner Test Credentials (Hyderabad Hub)
+AGENT_NAME=Alex Rivers
+AGENT_EMAIL=agent.alex@shopsphere.test
+AGENT_PASSWORD=Agent@123
+AGENT_PHONE=+91 98765 43210
+AGENT_VEHICLE=Motorcycle
+AGENT_ZONE=Hitech City, Hyderabad
 ```
 
 > **Security Note**: Never commit actual passwords or credentials to version control. The `.env` file is excluded from git tracking via `.gitignore`.
@@ -298,28 +330,31 @@ npm run test:ui
 
 ### Run Specific Test Suite
 ```bash
-# Authentication Suite
+# Authentication Suite (23 tests)
 npm run test:auth
 
-# Cart & Multi-Step Checkout Suite
+# Forgot & Reset Password Security Suite (14 tests)
+npm run test:forgot
+
+# Cart & Multi-Step Checkout Suite (12 tests)
 npm run test:cart
 
-# Home Page & Catalog Browsing Suite
+# Home Page & Catalog Browsing Suite (10 tests)
 npm run test:home
 
-# Product Detail Modal (PDP) Suite
+# Product Detail Modal (PDP) Suite (7 tests)
 npm run test:pdp
 
-# Search & Quick Results Suite
+# Search & Quick Results Suite (11 tests)
 npm run test:search
 
-# Delivery Partner Portal & Onboarding Suite
+# Delivery Partner Portal & Onboarding Suite (14 tests)
 npm run test:agent
 
-# Admin Amount Collection & Cash Handling Console Suite
+# Admin Amount Collection & Cash Handling Console Suite (6 tests)
 npm run test:admin-amount
 
-# Full COD Settlement & Store Cash Deposit Flow
+# Full COD Settlement & Store Cash Deposit Flow (1 test)
 npm run test:settlement
 ```
 

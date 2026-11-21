@@ -304,7 +304,7 @@ test.describe('ShopSphere Cart (Your Shopping Basket), Coupon & Multi-Step Check
     await expect(cartCheckout.orderReferenceNumber).toContainText(/^ORD-/);
     await expect(cartCheckout.orderTrackingNumber).toContainText(/^TRK-/);
     await expect(cartCheckout.orderPaymentStatus).toHaveText(/paid/i);
-    await expect(cartCheckout.orderTotalPaid).toContainText('$');
+    await expect(cartCheckout.orderTotalPaid).toContainText('₹');
     await expect(cartCheckout.viewOrdersBtn).toBeVisible();
     await expect(cartCheckout.continueShoppingBtn).toBeVisible();
 
@@ -432,7 +432,7 @@ test.describe('ShopSphere Guest Checkout Auth Guard to Order Confirmation Flow',
     await expect(cartCheckout.orderReferenceNumber).toContainText(/^ORD-/);
     await expect(cartCheckout.orderTrackingNumber).toContainText(/^TRK-/);
     await expect(cartCheckout.orderPaymentStatus).toHaveText(/paid/i);
-    await expect(cartCheckout.orderTotalPaid).toContainText('$');
+    await expect(cartCheckout.orderTotalPaid).toContainText('₹');
     await expect(cartCheckout.viewOrdersBtn).toBeVisible();
     await expect(cartCheckout.continueShoppingBtn).toBeVisible();
 

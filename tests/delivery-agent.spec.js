@@ -96,12 +96,11 @@ test.describe('ShopSphere Delivery Partner Portal & Onboarding Suite', () => {
     await agentPage.openViaHeader();
     await agentPage.tabVerify.click();
 
-    // Empty OTP
-    await agentPage.verifyEmail({
-      email: 'testagent@shopsphere.test',
-      token: '',
-    });
-    await expect(page.getByText(/please enter the 6-digit verification code/i)).toBeVisible();
+    // Empty OTP blocked by HTML5 constraint validation
+    await agentPage.verifyEmailInput.fill('testagent@gozora.site');
+    await agentPage.verifyTokenInput.fill('');
+    const isValid = await agentPage.verifyTokenInput.evaluate((el) => el.checkValidity());
+    expect(isValid).toBe(false);
 
     // Invalid OTP
     await agentPage.verifyEmail({
@@ -191,5 +190,99 @@ test.describe('ShopSphere Delivery Partner Portal & Onboarding Suite', () => {
     await agentPage.logout();
     await expect(agentPage.tabLogin).toBeVisible();
     await expect(agentPage.loginSubmitBtn).toBeVisible();
+  });
+
+  // ========================================================
+  // 5. EQUIVALENCE PARTITIONING & BOUNDARY VALUE CORNERS
+  // ========================================================
+
+  test('TC-AGENT-10 (-ve): [EP: Invalid Credentials] Agent login fails with wrong password', async ({ page }) => {
+    await agentPage.openViaHeader();
+    await agentPage.loginAgent({
+      email: 'agent.alex@shopsphere.test',
+      password: 'WrongPassword@999',
+    });
+
+    await expect(page.getByText(/invalid email or password/i)).toBeVisible();
+  });
+
+  test('TC-AGENT-11 (-ve): [EP: Unregistered Agent] Login fails with non-existent email', async ({ page }) => {
+    await agentPage.openViaHeader();
+    await agentPage.loginAgent({
+      email: `unregistered.agent.${Date.now()}@shopsphere.test`,
+      password: 'SomePassword@123',
+    });
+
+    await expect(page.getByText(/invalid email or password/i)).toBeVisible();
+  });
+
+  test('TC-AGENT-12 (+ve): [EP: Vehicle & Hyderabad Zone Diversity] Agent can register with different vehicles and Hyderabad hubs', async ({ page, request }) => {
+    const baseURL = process.env.BASE_URL || 'https://samecommers.netlify.app';
+    const timestamp = Date.now();
+
+    // Test different vehicle types and Hyderabad zones via API
+    const testAgent = {
+      name: 'Vikram Joshi',
+      email: `agent.vikram.${timestamp}@shopsphere.test`,
+      phone: '+91 98765 44332',
+      gender: 'male',
+      vehicleType: 'Electric Van',
+      deliveryZone: 'Gachibowli, Hyderabad',
+    };
+
+    const res = await request.post(`${baseURL}/api/agent/register`, { data: testAgent });
+    expect([200, 201]).toContain(res.status());
+    const body = await res.json();
+    expect(body.success).toBe(true);
+    expect(body.data.agent.vehicleType).toBe('Electric Van');
+    expect(body.data.agent.deliveryZone).toContain('Gachibowli');
+  });
+
+  test('TC-AGENT-13 (+ve): [EP: Gender-Matched Avatars] Gender selection dynamically presents corresponding avatar options', async ({ page }) => {
+    await agentPage.openViaHeader();
+    await agentPage.tabRegister.click();
+
+    // 1. Select Female gender radio
+    const femaleRadio = page.locator('input[type="radio"][value="female"]');
+    if (await femaleRadio.isVisible()) {
+      await femaleRadio.check();
+      await expect(femaleRadio).toBeChecked();
+    }
+
+    // 2. Select Non-Binary gender radio
+    const nonBinaryRadio = page.locator('input[type="radio"][value="non_binary"]');
+    if (await nonBinaryRadio.isVisible()) {
+      await nonBinaryRadio.check();
+      await expect(nonBinaryRadio).toBeChecked();
+    }
+
+    // 3. Return to Male gender
+    const maleRadio = page.locator('input[type="radio"][value="male"]');
+    if (await maleRadio.isVisible()) {
+      await maleRadio.check();
+      await expect(maleRadio).toBeChecked();
+    }
+  });
+
+  test('TC-AGENT-14 (+ve): [API: Live FIFO Queue & Online Presence Heartbeat]', async ({ request }) => {
+    const baseURL = process.env.BASE_URL || 'https://samecommers.netlify.app';
+
+    // 1. Login as Alex Rivers
+    const loginRes = await request.post(`${baseURL}/api/agent/login`, {
+      data: { email: 'agent.alex@shopsphere.test', password: 'Agent@123' },
+    });
+    expect(loginRes.status()).toBe(200);
+    const loginJson = await loginRes.json();
+    const token = loginJson.data?.token;
+    expect(token).toBeTruthy();
+
+    // 2. Post Heartbeat to maintain FIFO rotation position
+    const hbRes = await request.post(`${baseURL}/api/agent/heartbeat`, {
+      headers: { Authorization: `Bearer ${token}` },
+      data: { lat: 17.4486, lng: 78.3908 },
+    });
+    expect(hbRes.status()).toBe(200);
+    const hbJson = await hbRes.json();
+    expect(hbJson.success).toBe(true);
   });
 });

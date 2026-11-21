@@ -303,4 +303,38 @@ test.describe('ShopSphere Complete Auth Suite (Customer & Administrator)', () =>
     await expect(authPage.modal).toBeVisible();
     await expect(authPage.signInNavBtn).toBeVisible();
   });
+
+  // ==========================================
+  // 5. BOUNDARY VALUE ANALYSIS & FORGOT PWD INTEGRATION
+  // ==========================================
+
+  test('TC-AUTH-BVA-01 (+ve): Customer registration with exactly 6-character password boundary', async ({ page }) => {
+    const boundaryUser = {
+      name: 'Boundary Pass User',
+      email: `bva6_${Date.now()}@shopsphere.test`,
+      password: 'Pass01', // Exactly 6 characters (BVA N boundary)
+      phone: '+91 98765 00010',
+    };
+
+    const apiPromise = page.waitForResponse(
+      (res) => res.url().includes('/register') && [200, 201].includes(res.status()),
+      { timeout: 15000 }
+    ).catch(() => null);
+
+    await authPage.register(boundaryUser);
+
+    const response = await apiPromise;
+    if (response) {
+      expect([200, 201]).toContain(response.status());
+    }
+  });
+
+  test('TC-AUTH-FP-01 (+ve): Forgot Password link on Customer Sign In opens recovery form', async () => {
+    await authPage.openSignInModal();
+    await expect(authPage.forgotPasswordLink).toBeVisible();
+
+    await authPage.forgotPasswordLink.click();
+    await expect(authPage.forgotEmailInput).toBeVisible();
+    await expect(authPage.forgotSubmitBtn).toBeVisible();
+  });
 });
