@@ -39,6 +39,23 @@ export class AuthPage {
     this.loginPasswordInput = this.modal.getByTestId('login-password-input');
     this.loginSubmitBtn = this.modal.locator('form button[type="submit"]');
 
+    // 5b. Forgot & Reset Password Form Fields
+    this.forgotPasswordLink = this.modal.getByTestId('link-forgot-password');
+    this.forgotEmailInput = this.modal.getByTestId('forgot-email-input');
+    this.forgotSubmitBtn = this.modal.getByTestId('forgot-submit-button');
+    this.forgotSuccessMsg = this.modal.getByTestId('forgot-success-message');
+    this.forgotErrorMsg = this.modal.getByTestId('forgot-error-message');
+    this.btnProceedToReset = this.modal.getByTestId('btn-proceed-to-reset');
+    this.linkHaveOtp = this.modal.getByTestId('link-have-otp');
+
+    this.resetEmailInput = this.modal.getByTestId('reset-email-input');
+    this.resetOtpInput = this.modal.getByTestId('reset-otp-input');
+    this.resetPasswordInput = this.modal.getByTestId('reset-password-input');
+    this.resetConfirmPasswordInput = this.modal.getByTestId('reset-confirm-password-input');
+    this.resetSubmitBtn = this.modal.getByTestId('reset-submit-button');
+    this.resetSuccessMsg = this.modal.getByTestId('reset-success-message');
+    this.resetErrorMsg = this.modal.getByTestId('reset-error-message');
+
     // 6. Admin Login form fields inside auth-modal
     this.adminIdentifierInput = this.modal.getByTestId('admin-login-identifier-input');
     this.adminPasswordInput = this.modal.getByTestId('admin-login-password-input');
@@ -115,5 +132,35 @@ export class AuthPage {
     await this.userMenuTrigger.click();
     await this.userMenuDropdown.waitFor({ state: 'visible' });
     await this.signOutBtn.click();
+  }
+
+  async openForgotPassword() {
+    await this.openSignInModal();
+    await this.forgotPasswordLink.click();
+    await this.forgotEmailInput.waitFor({ state: 'visible' });
+  }
+
+  async requestPasswordReset(email) {
+    await this.openForgotPassword();
+    if (email !== undefined) {
+      await this.forgotEmailInput.fill(email);
+    }
+    await this.forgotSubmitBtn.click();
+  }
+
+  async resetPassword({ email, otp, newPassword, confirmPassword = newPassword }) {
+    if (email !== undefined) {
+      await this.resetEmailInput.fill(email);
+    }
+    if (otp !== undefined) {
+      await this.resetOtpInput.fill(otp);
+    }
+    if (newPassword !== undefined) {
+      await this.resetPasswordInput.fill(newPassword);
+    }
+    if (confirmPassword !== undefined) {
+      await this.resetConfirmPasswordInput.fill(confirmPassword);
+    }
+    await this.resetSubmitBtn.click();
   }
 }

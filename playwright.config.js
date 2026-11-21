@@ -1,4 +1,4 @@
-import { defineConfig } from '@playwright/test';
+import { defineConfig , devices} from '@playwright/test';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -21,14 +21,40 @@ export default defineConfig({
     video: 'retain-on-failure',
   },
 
+//   projects: [
+//     {
+//       name: 'chromium',
+//       use: {
+//         launchOptions: {
+//           args: ['--start-maximized', '--window-size=1920,1080'],
+//         },
+//       },
+//     },
+//   ],
+
+
+
   projects: [
+    // {
+    //   name: 'Google Chrome',
+    //   use: {
+    //     ...devices['Desktop Chrome'],
+    //     channel: 'chrome', // Uses locally installed Google Chrome
+    //   },
+    // },
     {
-      name: 'chromium',
+      name: 'Microsoft Edge',
       use: {
-        launchOptions: {
-          args: ['--start-maximized', '--window-size=1920,1080'],
-        },
+        ...devices['Desktop Edge'],
+        channel: 'msedge', // Uses locally installed Microsoft Edge
       },
     },
+    // {
+    //   name: 'Chrome Beta',
+    //   use: {
+    //     ...devices['Desktop Chrome'],
+    //     channel: 'chrome-beta', // Optional: uses Chrome Beta if installed
+    //   },
+    // },
   ],
 });

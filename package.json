@@ -18,6 +18,15 @@
     "test:search:headed": "playwright test tests/search.spec.js --headed",
     "test:checkout": "playwright test tests/cart-checkout.spec.js",
     "test:checkout:headed": "playwright test tests/cart-checkout.spec.js --headed",
+    "test:agent": "playwright test tests/delivery-agent.spec.js",
+    "test:agent:headed": "playwright test tests/delivery-agent.spec.js --headed",
+    "test:admin-amount": "playwright test tests/admin-amount-handling.spec.js",
+    "test:admin-amount:headed": "playwright test tests/admin-amount-handling.spec.js --headed",
+    "test:forgot": "playwright test tests/forgot-password.spec.js",
+    "test:forgot:headed": "playwright test tests/forgot-password.spec.js --headed",
+    "test:settlement": "playwright test tests/agent-settlement-flow.spec.js",
+    "test:settlement:headed": "playwright test tests/agent-settlement-flow.spec.js --headed",
+    "test:all": "playwright test",
     "report": "playwright show-report"
   },
   "keywords": [

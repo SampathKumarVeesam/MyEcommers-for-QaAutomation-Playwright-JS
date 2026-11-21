@@ -35,7 +35,7 @@ test.describe('ShopSphere Complete Auth Suite (Customer & Administrator)', () =>
   test('TC-REG-01 (+ve): Initial customer registration persists to database', async ({ page }) => {
     const uniqueUser = {
       name: REAL_USER.name,
-      email: `test_${Date.now()}@mailto.plus`,
+      email: `test_${Date.now()}@gmail.com`,
       password: REAL_USER.password,
     };
 

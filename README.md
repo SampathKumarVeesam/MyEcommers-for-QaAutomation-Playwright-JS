@@ -72,13 +72,18 @@ MyEcommers-for-QaAutomation-Playwright-JS/
 │   └── workflows/
 │       └── playwright.yml         # GitHub Actions CI pipeline configuration
 ├── pages/                          # Page Object Model (POM) classes
+│   ├── AdminPage.js               # Admin & Analytics console, Amount Handling & queues
 │   ├── AuthPage.js                # Customer & Admin authentication actions & locators
 │   ├── CartCheckoutPage.js        # Cart drawer, coupon handling, country & checkout
+│   ├── DeliveryAgentPage.js       # Delivery Partner portal, OTP onboarding, dashboard & settlements
 │   ├── HomePage.js                # Catalog, search, filters, hero slides & footer
 │   └── ProductDetailPage.js       # PDP modal, steppers, pricing & social sharing
-├── tests/                         # E2E Test Specifications (61 Tests)
+├── tests/                         # E2E Test Specifications (77+ Tests)
+│   ├── admin-amount-handling.spec.js # Admin Amount Handling, Cash/QR queues & alerts (6 tests)
+│   ├── agent-settlement-flow.spec.js # Full COD Settlement & Store Cash Deposit lifecycle (1 test)
 │   ├── auth.spec.js               # Registration, Login, Logout & Admin auth suite (21 tests)
 │   ├── cart-checkout.spec.js      # Cart management, coupon & multi-step checkout suite (12 tests)
+│   ├── delivery-agent.spec.js     # Delivery Agent onboarding, OTP & store deposit suite (9 tests)
 │   ├── home.spec.js               # Catalog browsing, sliders, sorting & pagination (10 tests)
 │   ├── product-details.spec.js    # PDP modal, dynamic pricing & basket interactions (7 tests)
 │   └── search.spec.js             # Live search, dropdown previews, XSS & edge cases (11 tests)
@@ -173,6 +178,34 @@ MyEcommers-for-QaAutomation-Playwright-JS/
 | `TC-CHK-07` | OTP Gate rejects invalid/wrong OTP code with clear error notice |
 | `TC-CHK-08` | Guest Checkout Auth Guard: Guest user is prompted to sign in and completes checkout |
 | `TC-CHK-09` | PDP "Buy Now" direct jump into Secure Checkout flow |
+
+### 6. Delivery Partner Portal & Onboarding Suite (`tests/delivery-agent.spec.js` — 9 Tests)
+| Test ID | Type | Description |
+|---|---|---|
+| `TC-AGENT-01` | Navigation | Delivery Partner Portal opens via Header button and `#agent` URL hash |
+| `TC-AGENT-02` | Positive | Agent self-registration dispatches 6-digit OTP to mailbox and leaves OTP input empty |
+| `TC-AGENT-03` | Negative | Duplicate registration with already registered agent email is rejected |
+| `TC-AGENT-04` | Negative | Email verification fails when OTP code is empty or invalid |
+| `TC-AGENT-05` | Security | Verifying email sends temporary password to mailbox only (never exposed on UI) |
+| `TC-AGENT-06` | Dashboard | Quick demo login as Alex Rivers displays assigned deliveries, earnings, and online FIFO presence |
+| `TC-AGENT-07` | Settlement | Store Cash Deposit tab displays cash balance, lock status, and Hyderabad Store details |
+| `TC-AGENT-08` | Alerts | In-App Notification Bell toggles real-time delivery agent alerts dropdown |
+| `TC-AGENT-09` | Session | Delivery Agent can successfully log out and return to the login screen |
+
+### 7. Admin Amount Collection & Cash Handling Console Suite (`tests/admin-amount-handling.spec.js` — 6 Tests)
+| Test ID | Type | Description |
+|---|---|---|
+| `TC-ADMIN-AMT-01` | Navigation | Admin can open Admin Console and navigate to the Amount Handling tab |
+| `TC-ADMIN-AMT-02` | Financial | Amount Handling Console renders 3 KPI summary cards (UPI QR, Cash in Hand/Store, Reconciled COD) |
+| `TC-ADMIN-AMT-03` | Verification | Store Cash Deposit Approvals queue displays locked agents and settlement queues |
+| `TC-ADMIN-AMT-04` | Verification | UPI QR Payment Verification queue renders table headers or empty queue state |
+| `TC-ADMIN-AMT-05` | Alerts | Admin In-App Notification Bell toggles real-time alert dropdown |
+| `TC-ADMIN-AMT-06` | Directory | Delivery Agents tab displays agent list with online status and FIFO ranks |
+
+### 8. Full COD Settlement & Store Cash Deposit Lifecycle Suite (`tests/agent-settlement-flow.spec.js` — 1 Test)
+| Test ID | Type | Description |
+|---|---|---|
+| `TC-SETTLE-01` | End-to-End | Full lifecycle verification: Admin Amount Handling -> Agent Demo Login -> Store Cash Deposit -> In-App Notifications -> Agent Sign Out |
 
 ---
 
@@ -279,6 +312,15 @@ npm run test:pdp
 
 # Search & Quick Results Suite
 npm run test:search
+
+# Delivery Partner Portal & Onboarding Suite
+npm run test:agent
+
+# Admin Amount Collection & Cash Handling Console Suite
+npm run test:admin-amount
+
+# Full COD Settlement & Store Cash Deposit Flow
+npm run test:settlement
 ```
 
 ### Debugging with Playwright Inspector
