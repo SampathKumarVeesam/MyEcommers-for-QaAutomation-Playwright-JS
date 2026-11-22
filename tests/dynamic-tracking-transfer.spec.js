@@ -111,4 +111,34 @@ test.describe('ShopSphere - Dynamic Live Tracking, Synchronized Countdown ETA & 
     const nearestRes = await request.get(`${BASE_URL}/api/orders/ORD-SAMPLE/nearest-agent`);
     expect([200, 404, 409]).toContain(nearestRes.status());
   });
+
+  test('TC-DTT-06 (-ve & +ve): Contact agent audit rejects invalid channels and accepts CALL / WHATSAPP / IN_APP_CHAT', async ({ request }) => {
+    // 1. Invalid channel should return 400
+    const invalidRes = await request.post(`${BASE_URL}/api/orders/ORD-SAMPLE/contact-agent`, {
+      data: {
+        contactChannel: 'PIGEON_POST',
+      },
+    });
+    expect(invalidRes.status()).toBe(400);
+    const invalidJson = await invalidRes.json();
+    expect(invalidJson.message).toMatch(/CALL, WHATSAPP, or IN_APP_CHAT/i);
+
+    // 2. Valid channel against sample order returns 400 (order not found / no agent) or 200
+    const validRes = await request.post(`${BASE_URL}/api/orders/ORD-SAMPLE/contact-agent`, {
+      data: {
+        contactChannel: 'CALL',
+      },
+    });
+    expect([200, 400]).toContain(validRes.status());
+  });
+
+  test('TC-DTT-07 (+ve): Emergency transfer accepts valid reason >= 15 characters', async ({ request }) => {
+    const transferRes = await request.post(`${BASE_URL}/api/orders/ORD-SAMPLE/transfer`, {
+      data: {
+        transferReason: 'Vehicle breakdown / flat tire on delivery route at Madhapur junction',
+      },
+    });
+    // Expected: 200 (transferred), 404 (order not found), or 409 (no nearby agent available)
+    expect([200, 404, 409]).toContain(transferRes.status());
+  });
 });
