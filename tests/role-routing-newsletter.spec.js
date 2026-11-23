@@ -33,7 +33,7 @@ test.describe('ShopSphere - Role-Based URLs, Top Bar Removal & VIP Newsletter Su
     const header = page.locator('header');
     // Logo, search, cart, and customer auth should be present
     await expect(header.getByTestId('nav-logo')).toBeVisible();
-    await expect(header.getByPlaceholder(/search/i)).toBeVisible();
+    await expect(header.getByTestId('search-input')).toBeVisible();
 
     // Cross-role buttons must be absent from customer navbar
     await expect(header.getByTestId('nav-delivery-portal')).toBeHidden();
