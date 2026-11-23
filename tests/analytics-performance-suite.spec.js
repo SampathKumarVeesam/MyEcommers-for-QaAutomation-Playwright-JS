@@ -27,7 +27,7 @@ test.describe('ShopSphere - Unified Frosted-Glass Auth, Sapphire Executive UI & 
 
     // Switch to Register tab
     await page.getByTestId('auth-tab-register').click();
-    await expect(page.getByText('REGISTER')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'REGISTER' })).toBeVisible();
 
     // Close modal
     await page.getByTestId('auth-close-button').click();
