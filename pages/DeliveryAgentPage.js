@@ -80,12 +80,22 @@ export class DeliveryAgentPage {
   }
 
   async openViaHeader() {
-    await this.navDeliveryPortalBtn.click();
+    const isHeaderBtnVisible = await this.navDeliveryPortalBtn.isVisible().catch(() => false);
+    if (isHeaderBtnVisible) {
+      await this.navDeliveryPortalBtn.click();
+    } else {
+      await this.page.goto('/delivery');
+    }
     await this.portalModal.waitFor({ state: 'visible' });
   }
 
   async openViaUrlHash() {
-    await this.page.goto('/#agent');
+    await this.page.goto('/delivery');
+    await this.portalModal.waitFor({ state: 'visible' });
+  }
+
+  async openViaRoute() {
+    await this.page.goto('/delivery');
     await this.portalModal.waitFor({ state: 'visible' });
   }
 

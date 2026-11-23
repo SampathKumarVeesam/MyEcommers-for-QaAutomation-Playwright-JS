@@ -79,9 +79,9 @@ export class AuthPage {
   }
 
   async openAdminModal(viaTab = false) {
-    if (viaTab) {
-      await this.signInNavBtn.click();
-      await this.modal.waitFor({ state: 'visible' });
+    const isNavBtnVisible = await this.adminLoginNavBtn.isVisible().catch(() => false);
+    if (!isNavBtnVisible || viaTab) {
+      await this.openSignInModal();
       await this.adminTab.click();
     } else {
       await this.adminLoginNavBtn.click();

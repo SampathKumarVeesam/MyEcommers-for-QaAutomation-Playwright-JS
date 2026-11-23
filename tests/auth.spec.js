@@ -251,7 +251,7 @@ test.describe('ShopSphere Complete Auth Suite (Customer & Administrator)', () =>
     }
 
     await expect(authPage.signInNavBtn).toBeVisible();
-    await expect(authPage.adminLoginNavBtn).toBeVisible();
+    await expect(page.locator('header').getByTestId('nav-admin-login')).toBeHidden();
   });
 
   test('TC-ADM-05 (-ve): Admin login fails with wrong password', async ({ page }) => {
