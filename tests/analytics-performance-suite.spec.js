@@ -105,7 +105,7 @@ test.describe('ShopSphere - Unified Frosted-Glass Auth, Sapphire Executive UI & 
     await expect(page.getByText(/365-Day Purchasing Ledger/i)).toBeVisible();
 
     // Close the Dossier Modal
-    await page.locator('button:has-text("×")').first().click();
+    await page.locator('button[data-testid="btn-close-user-analytics-modal"], button:has-text("×")').first().click();
   });
 
   test('TC-ADMIN-ANALYTICS-03 (+ve): Delivery Agents table has View Analytics button opening Agent Dossier modal', async ({ page }) => {
@@ -130,7 +130,7 @@ test.describe('ShopSphere - Unified Frosted-Glass Auth, Sapphire Executive UI & 
     await expect(page.getByText(/365-Day Delivery Fulfillment Ledger/i)).toBeVisible();
 
     // Close the Dossier Modal
-    await page.locator('button:has-text("×")').first().click();
+    await page.locator('button[data-testid="btn-close-user-analytics-modal"], button:has-text("×")').first().click();
   });
 
   // =========================================================================
@@ -164,11 +164,11 @@ test.describe('ShopSphere - Unified Frosted-Glass Auth, Sapphire Executive UI & 
     await expect(page.getByText(/3-Min FIFO Acceptance/i)).toBeVisible();
 
     // 4. Verify Delivery SLA Donut & Milestones Shelf
-    await expect(page.getByText(/Delivery SLA Performance Ratio/i)).toBeVisible();
-    await expect(page.getByText(/Clean Ledger Master/i)).toBeVisible();
+    await expect(page.getByText(/Delivery SLA Performance Ratio/i).first()).toBeVisible();
+    await expect(page.getByText(/Clean Ledger Master/i).first()).toBeVisible();
 
     // 5. Verify 365-Day Delivery Activity Calendar
-    await expect(page.getByText(/365-Day Delivery Activity Calendar/i)).toBeVisible();
+    await expect(page.getByText(/365-Day Delivery (Fulfillment )?Activity Calendar/i)).toBeVisible();
   });
 
   // =========================================================================
