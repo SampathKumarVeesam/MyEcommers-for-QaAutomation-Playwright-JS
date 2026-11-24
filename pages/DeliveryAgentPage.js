@@ -55,7 +55,7 @@ export class DeliveryAgentPage {
     this.tabStoreDeposit = this.portalModal.getByTestId('tab-store-deposit');
 
     // 8. Agent Info & Header Actions
-    this.agentNameText = this.portalModal.locator('.font-extrabold.text-slate-900.text-sm');
+    this.agentNameText = this.portalModal.locator('[data-test="agent-name"]').or(this.portalModal.locator('.font-extrabold.text-slate-900.text-sm').first());
     this.agentOnlineBadge = this.portalModal.getByText(/🟢 Online/i);
     this.walletEarningsDisplay = this.portalModal.locator('.font-mono.text-sm.font-extrabold.text-emerald-900');
     this.logoutBtn = this.portalModal.locator('button[title="Logout"]');

@@ -60,7 +60,7 @@ export class AuthPage {
     this.adminIdentifierInput = this.modal.getByTestId('admin-login-identifier-input');
     this.adminPasswordInput = this.modal.getByTestId('admin-login-password-input');
     this.adminPasswordToggle = this.modal.getByRole('button', { name: /show password|hide password/i }).first();
-    this.adminSubmitBtn = this.modal.getByRole('button', { name: 'Sign In to Admin Dashboard' });
+    this.adminSubmitBtn = this.modal.getByTestId('admin-login-submit-button').or(this.modal.getByRole('button', { name: /Sign In to Admin Dashboard|LOGIN AS ADMIN|LOGIN/i }));
   }
 
   async goto() {
