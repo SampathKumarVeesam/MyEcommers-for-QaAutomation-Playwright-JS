@@ -29,6 +29,8 @@ export class DeliveryAgentPage {
     // 5. Mandatory First-Login Password Change Screen
     this.newPermanentPasswordInput = this.portalModal.getByTestId('input-new-permanent-password');
     this.confirmPermanentPasswordInput = this.portalModal.getByTestId('input-confirm-permanent-password');
+    this.newPermanentPasswordToggle = this.portalModal.getByTestId('new-password-toggle');
+    this.confirmPermanentPasswordToggle = this.portalModal.getByTestId('confirm-password-toggle');
     this.savePermanentPasswordBtn = this.portalModal.getByTestId('btn-save-permanent-password');
 
     // 6. Sign In Form
