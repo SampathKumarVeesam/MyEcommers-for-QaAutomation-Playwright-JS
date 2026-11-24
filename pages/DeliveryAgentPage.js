@@ -16,7 +16,7 @@ export class DeliveryAgentPage {
     // 3. Agent Registration Form
     this.regNameInput = this.portalModal.getByTestId('input-agent-reg-name');
     this.regEmailInput = this.portalModal.getByTestId('input-agent-reg-email');
-    this.regPhoneInput = this.portalModal.getByPlaceholder('+91 98765 43210');
+    this.regPhoneInput = this.portalModal.getByTestId('input-agent-reg-phone').or(this.portalModal.getByPlaceholder('+91 ***** *****')).or(this.portalModal.getByPlaceholder('+91 98765 43210'));
     this.regVehicleSelect = this.portalModal.locator('select').first();
     this.regZoneSelect = this.portalModal.locator('select:has(option[value*="Hyderabad"])');
     this.regSubmitBtn = this.portalModal.getByTestId('btn-agent-register');
